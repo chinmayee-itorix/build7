@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TargetEndpoint name="Loans-OpenAPI-V1">
+    <Description>Loans-OpenAPI-V1</Description>
+	<FaultRules/>
+	<DefaultFaultRule>
+        <AlwaysEnforce>true</AlwaysEnforce>
+        <Step>
+            <Name>SF-PostflowResponseTargetLogAggregator</Name>
+        </Step>
+    </DefaultFaultRule>
+	<PreFlow name="PreFlow">
+        <Request>
+            <Step>
+                <Name>SF-PreflowRequestTargetLogAggregator</Name>
+            </Step>
+            <Step>
+                <Name>cf-Remove-Proxy-Auth-Header</Name>
+            </Step>
+        </Request>
+        <Response/>
+    </PreFlow>
+	<Flows>
+        <Flow name="GETLoanTransaction">
+        	<Condition>(targetOperation = &quot;GETLoanTransaction&quot;)</Condition>
+			<Request>
+			</Request>
+			<Response>
+            </Response>
+        </Flow>
+	</Flows>
+    <PostFlow name="PostFlow">
+        <Request>
+            <Step>
+                <Name>SF-PostflowRequestTargetLogAggregator</Name>
+            </Step>
+        </Request>
+        <Response>
+            <Step>
+                <Name>SF-PostflowResponseTargetLogAggregator</Name>
+            </Step>
+        </Response>
+    </PostFlow>
+    <HTTPTargetConnection>
+    	<LoadBalancer>
+            <Server name="Loans-OpenAPI-V1">
+                <IsEnabled>true</IsEnabled>
+            </Server>
+        </LoadBalancer>
+        <Path>/openapi/v1/loans</Path>
+    </HTTPTargetConnection>
+</TargetEndpoint>
